@@ -66,11 +66,13 @@ nav a:hover {
 .gallery {
     grid-area: gallery;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales*/
+    /* grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales*/*/
     gap: 20px;
     padding: 20px;
     /*Cajas 300px exactos de alto*/
-    grid-template-rows: 300px;
+    grid-auto-rows: 250px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
 }
 
 /*Marcos de los cuadros*/
@@ -85,7 +87,7 @@ nav a:hover {
     height: 100%;
     /*MAGIA 1*/
     /*"cover"Recortar la foto para encaje perfecto*/
-    object-fit: contain; 
+   object-fit: contain;
     /*contain hace que se vea al 100% la imagen*/
     transition: transform 0.3s;
 }
@@ -107,6 +109,64 @@ nav a:hover {
     border-radius: 10px;
 }
 
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  body {
+    grid-template-columns: 200px 1fr; /* menú más usable */
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px auto 1fr 30px;
+    grid-template-areas:
+      "header"
+      "nav"
+      "gallery"
+      "footer";
+  }
+
+  nav {
+    padding: 10px;
+  }
+
+  nav ul {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  nav li {
+    margin: 0;
+  }
+
+  .gallery {
+    grid-template-columns: 1fr; /* 1 columna */
+    gap: 15px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  header {
+    font-size: 1.2rem;
+    padding-top: 10px;
+  }
+
+  .thumb {
+    border-radius: 5px;
+  }
+}
 
 
 
