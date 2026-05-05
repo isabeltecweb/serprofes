@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fdfaf6; /* Un tono crema muy suave */
+    padding: 20px;
+}
+
+.tarjeta-bb {
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    max-width: 380px;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #f1e4d8;
+}
+
+.contenedor-foto {
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+}
+
+.contenedor-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+/* Efecto sutil al pasar el mouse */
+.tarjeta-bb:hover .contenedor-foto img {
+    transform: scale(1.05);
+}
+
+.contenido {
+    padding: 30px;
+}
+
+.titulo {
+    font-size: 1.6rem;
+    color: #4a3f35;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.descripcion {
+    font-size: 0.95rem;
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Estilo para el Precio Infinito */
+.precio-infinito {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.precio-infinito .etiqueta {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #b2bec3;
+    letter-spacing: 2px;
+}
+
+.precio-infinito .simbolo {
+    font-size: 3.5rem;
+    color: #d4af37; /* Color oro */
+    line-height: 1;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.etiqueta-amor {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff7675, #d63031);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3);
+}
