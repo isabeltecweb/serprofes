@@ -1,6 +1,6 @@
 /* CSS PROYECTO SAAS */
 /* 1. RESETEO Y BASES */
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,31 +8,24 @@
 }
 
 /* 2. LAYOUT PRINCIPAL (Flexbox)*/
-.app-container {
-    display: flex;
-    /*Ponemos Sidebar y chat en fila*/
-    height: 100vh;
-    /*Ocupar el 100% de la altura de la ventana*/
-    overflow: hidden;
-    /*Evita que la web entera haga scroll*/
+.app-container{
+    display: flex; /*Ponemos Sidebar y chat en fila*/
+    height: 100vh; /*Ocupar el 100% de la altura de la ventana*/
+    overflow: hidden; /*Evita que la web entera haga scroll*/
 }
 
 /* 3. SIDEBAR (Barra lateral) */
-.sidebar {
-    width: 260px;
-    /*Ancho fijo para el menú */
-    background-color: #202123;
-    /*Color oscuro tipo CHATGPT*/
+.sidebar{
+    width: 260px; /*Ancho fijo para el menú */
+    background-color: #202123; /*Color oscuro tipo CHATGPT*/
     color: white;
     display: flex;
-    flex-direction: column;
-    /*Los elementos del menú van*/
-    justify-content: space-between;
-    /*Logo arriba, perfil abajo*/
+    flex-direction: column; /*Los elementos del menú van*/
+    justify-content: space-between; /*Logo arriba, perfil abajo*/
     padding: 15px;
 }
 
-.menu-lateral button {
+.menu-lateral button{
     width: 100%;
     padding: 12px;
     background: transparent;
@@ -45,34 +38,28 @@
 
 /* 4. AREA DE CHAT (Zona Central) */
 
-.chat-area {
-    flex-grow: 1;
-    /*Ocupa TODO el espacio restante de la pantalla*/
+.chat-area{
+    flex-grow: 1; /*Ocupa TODO el espacio restante de la pantalla*/
     display: flex;
-    flex-direction: column;
-    /*Cabecera arriba, mensajes centro, input abajo*/
+    flex-direction: column; /*Cabecera arriba, mensajes centro, input abajo*/
     background-color: #343541;
 }
 
-.chat-header {
+.chat-header{
     padding: 15px;
     border-bottom: 1px solid #4d4d4f;
     color: #ececf1;
     text-align: center;
 }
-
 .mensajes-container {
-    flex-grow: 1;
-    /*Mensajes ocupan el centro*/
+    flex-grow: 1; /*Mensajes ocupan el centro*/
     padding: 40px;
     display: flex;
-    justify-content: center;
-    /*Centra horizontalmente*/
-    align-items: center;
-    /*Centra el contenido verticalmente*/
+    justify-content: center;/*Centra horizontalmente*/
+    align-items: center;/*Centra el contenido verticalmente*/
 }
 
-.mensaje-ia {
+.mensaje-ia{
     color: #d1d5db;
     max-width: 600px;
     font-size: 1.1rem;
@@ -80,16 +67,14 @@
 }
 
 /*5. FORMULARIO DE ENTRADA (input)*/
-.input-area {
+.input-area{
     padding: 20px 40px;
 }
 
-.chat-form {
+.chat-form{
     max-width: 700px;
-    margin: 0 auto;
-    /*Centra el formulario en el medio*/
-    display: flex;
-    /*El input y el boton en fila*/
+    margin: 0 auto; /*Centra el formulario en el medio*/
+    display: flex;/*El input y el boton en fila*/
     background-color: #40414f;
     padding: 10px;
     border-radius: 8px;
@@ -97,15 +82,12 @@
 }
 
 .chat-form input {
-    flex-grow: 1;
-    /* El input estira todo lo que puede*/
+    flex-grow: 1; /* El input estira todo lo que puede*/
     background-color: transparent;
-    border: none;
-    /*Sin borde*/
+    border: none; /*Sin borde*/
     color: white;
     padding: 10px;
-    outline: none;
-    /*Quita el borde azul al hacer click*/
+    outline: none; /*Quita el borde azul al hacer click*/
 }
 
 .chat-form button {
@@ -117,49 +99,51 @@
     cursor: pointer;
 }
 
-/* MAGIA RESPONSIVE - ADAPTANDO EL CHAT A MOVILES*/
-/* Si la pantalla es de tamaño tablet o movile (menos de 768px)*/
-@media (max-width: 768px) {
+/*MAGIA RESPONSIVE - ADAPTANDO EL CHAT A MÓVILES*/
+
+/*Si la pantalla es de tamaño tablet
+o móvil (menos de 768px)
+*/
+@media (max-width: 768px){
+    /*1. Ocultanos menu lateral*/
     .sidebar {
-        /*Hace de que la barra desaparezca*/
+        /*Hace de que la barra 
+        desaparezca*/
         display: none;
     }
-
     /*2. Damos mas espacio al texto del chat*/
-    .mensajes-container {
+    .mensajes-container{
         /*Reducir el padding*/
         padding: 20px;
     }
+    /*3. Ajustamos el formulario para que
+    quepa bien en pantallas estrechas*/
+    .input-area{
+        padding: 15px;
+    }
+    .chat-form {
+        flex-direction: row;
+        padding: 5px;
+    }
+
+    .chat-form input{
+        font-size: 0.9rem; /*letra mas pequeña*/
+    }
+    .chat-form button{
+        padding: 8px 12px;/*boton mas compacto*/
+    }
 }
 
-/*3. Ajustamos el formulario para que quepa bien en pantallas estrechas  */
-.input-area {
-    padding: 15px;
-}
-
-.chat-form {
-    flex-direction: row;
-    padding: 5px;
-}
-
-.chat-form input {
-    front-size: 0.9rem;
-    /* letra mas pequeña*/
-}
-
-.chat-form button {
-    padding: 8px 12px;
-    /*boton mas compacto*/
-}
-
-@media(max-width:480px) {
+@media (max-width:480px) {
     .chat-header h3 {
-        font-size: 1.1rem;
-        /*Achicamos el titulo superior */
+        font-size: 1.1rem; /*Achicamos el titulo superior*/
     }
-
     .mensaje-ia {
-        font-size: 0.95rem;
-        /* Ajustamos el texto de la ia para que no se vea gigante */
+        font-size: 0.95rem; 
+        /*Ajustamos el texto de la ia para que no se vea
+        gitante*/
     }
 }
+
+
+
