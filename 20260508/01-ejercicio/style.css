@@ -1,0 +1,269 @@
+/* ===== RESET ===== */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== BODY ===== */
+body{
+    font-family: 'Courier New', Courier, monospace;
+
+    background:
+    linear-gradient(135deg, #1f2c3a, #2c3e50);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+
+    padding: 20px;
+
+    color: #333;
+}
+
+/* ===== CARD ===== */
+.card{
+    width: 100%;
+    max-width: 380px;
+
+    background: #ecf0f1;
+
+    padding: 35px 30px;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    border: 5px solid #34495e;
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.35);
+
+    animation: aparecer .7s ease;
+}
+
+/* ===== TITULO ===== */
+h2{
+    color: #e74c3c;
+
+    margin-bottom: 12px;
+
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+/* ===== TEXTO ===== */
+.instrucciones{
+    color: #7f8c8d;
+
+    margin-bottom: 20px;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+
+    line-height: 1.5;
+}
+
+/* ===== VIDAS ===== */
+#texto-vidas{
+    color: #c0392b;
+
+    margin-bottom: 22px;
+
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+
+    font-weight: bold;
+}
+
+/* ===== INPUT ===== */
+input{
+    width: 100%;
+
+    padding: 14px;
+
+    margin-bottom: 22px;
+
+    border: 3px solid #bdc3c7;
+
+    border-radius: 10px;
+
+    font-size: 1.1rem;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    outline: none;
+
+    transition: .25s ease;
+}
+
+input:focus{
+    border-color: #3498db;
+
+    transform: scale(1.02);
+
+    box-shadow:
+        0 0 10px rgba(52,152,219,0.4);
+}
+
+/* ===== BOTON 3D ===== */
+button{
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 1.1rem;
+
+    font-weight: bold;
+
+    font-family: 'Courier New', Courier, monospace;
+
+    color: white;
+
+    background:
+    linear-gradient(
+        to bottom,
+        #4cd964,
+        #27ae60
+    );
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    /* EFECTO 3D */
+    box-shadow:
+        0 7px 0 #1e8449,
+        0 14px 18px rgba(0,0,0,0.3);
+
+    transition: all .15s ease;
+}
+
+/* BRILLO */
+button::before{
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -80%;
+
+    width: 45%;
+    height: 100%;
+
+    background: rgba(255,255,255,0.25);
+
+    transform: skewX(-25deg);
+
+    transition: .7s;
+}
+
+/* HOVER */
+button:hover{
+    background:
+    linear-gradient(
+        to bottom,
+        #66ff7f,
+        #2ecc71
+    );
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 11px 0 #1e8449,
+        0 18px 22px rgba(0,0,0,0.35);
+}
+
+/* MOVIMIENTO DE BRILLO */
+button:hover::before{
+    left: 130%;
+}
+
+/* CLICK */
+button:active{
+    transform: translateY(5px);
+
+    background:
+    linear-gradient(
+        to bottom,
+        #f39c12,
+        #d35400
+    );
+
+    box-shadow:
+        0 2px 0 #873600,
+        0 5px 10px rgba(0,0,0,0.25);
+}
+
+/* ===== MENSAJE ===== */
+.resultado{
+    margin-top: 22px;
+
+    min-height: 24px;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+
+    color: #2c3e50;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px){
+
+    .card{
+        padding: 28px 22px;
+    }
+
+    button{
+        font-size: 1rem;
+        padding: 14px;
+    }
+
+    input{
+        font-size: 1rem;
+    }
+}
+
+/* ===== ANIMACION ===== */
+@keyframes aparecer{
+    from{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Quitar flechas raras del input */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Estilo cuando el usuario escribe */
+input:valid{
+    border-color: #27ae60;
+}
+
+/* Si el número no es válido */
+input:invalid{
+    border-color: #e74c3c;
+}
