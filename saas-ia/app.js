@@ -1,4 +1,3 @@
-
 // 1. NUESTRA BASE DE DATOS MOCK
 // Array de objetos [ rol , texto ]
 let historialChat = [
