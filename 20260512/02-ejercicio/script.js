@@ -5,3 +5,10 @@ const carrito = [
     {nombre: "🥚 Huevos Camperos", precio: 2.50},
     {nombre: "🥑 Aguacate", precio:1.00}
 ];
+//CODIGO DE APOYO VISUAL
+let listaHTML = Document.getElementById('lista-producto');
+for(let i=0; i< carrito.length;i++){
+
+
+    
+}
