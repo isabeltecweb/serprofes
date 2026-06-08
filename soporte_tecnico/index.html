@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulacro: Sistema de Incidencias</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Soporte Técnico</h1>
+        
+        <div class="counter-box">
+            Tickets Activos: <span id="ticket-counter">0</span>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="equipo-input" placeholder="Nombre del Equipo (ej: PC-04)">
+            <input type="text" id="problema-input" placeholder="Problema (ej: No enciende la pantalla)">
+            <button id="btn-ticket">Abrir Ticket</button>
+        </div>
+
+        <h2>Historial de Incidencias</h2>
+        <ul id="lista-tickets">
+            </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
