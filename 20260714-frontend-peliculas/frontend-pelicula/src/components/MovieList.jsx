@@ -1,16 +1,17 @@
-// ==========================================================
-// MovieList.jsx
-// Recibe el array completo de películas y pinta una
-// MovieCard por cada una. No sabe nada de fetch ni de la API,
-// solo se encarga de mostrar datos (componente "tonto").
-// ==========================================================
 import React from "react";
-import MovieCard from "./MovieCard.jsx";
+import MovieCard from "./MovieCard";
 
-function MovieList({ movies, onEdit, onDelete }) {
-  // Si no hay películas (catálogo vacío), mostramos un mensaje
+function MovieList({
+  movies,
+  onEdit,
+  onDelete
+}) {
   if (movies.length === 0) {
-    return <p className="empty-message">No hay películas en el catálogo todavía.</p>;
+    return (
+      <div className="empty-message">
+        🍿 No hay películas todavía.
+      </div>
+    );
   }
 
   return (

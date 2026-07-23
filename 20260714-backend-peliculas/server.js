@@ -10,8 +10,8 @@ app.use(express.json());
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const PORT = process.env.PORT || 3000;
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 const PALABRAS_PROHIBIDAS = [
   "xxx",
@@ -24,158 +24,109 @@ const PALABRAS_PROHIBIDAS = [
   "x-rated"
 ];
 
-function esContenidoInapropiado(texto) {
-  if (!texto) return false;
-
+function contenidoInapropiado(texto = "") {
   return PALABRAS_PROHIBIDAS.some((palabra) =>
     texto.toLowerCase().includes(palabra)
   );
 }
 
-async function buscarPeliculaRealEnTMDb(titulo) {
-  if (!TMDB_API_KEY) {
-    return { errorConfig: true };
-  }
-
+async function obtenerPeliculaTMDb(titulo) {
   try {
-    const busquedaUrl =
+    const searchUrl =
       `https://api.themoviedb.org/3/search/movie` +
       `?api_key=${TMDB_API_KEY}` +
       `&query=${encodeURIComponent(titulo)}` +
       `&include_adult=true`;
 
-    const respuestaBusqueda = await fetch(busquedaUrl);
-    const datosBusqueda = await respuestaBusqueda.json();
+    const searchResponse = await fetch(searchUrl);
+    const searchData = await searchResponse.json();
 
-    if (!datosBusqueda.results || datosBusqueda.results.length === 0) {
-      return { esReal: false };
+    if (!searchData.results?.length) {
+      return null;
     }
 
-    const pelicula = datosBusqueda.results[0];
+    const movie = searchData.results[0];
 
-    const creditosUrl =
-      `https://api.themoviedb.org/3/movie/${pelicula.id}/credits` +
+    const creditsUrl =
+      `https://api.themoviedb.org/3/movie/${movie.id}/credits` +
       `?api_key=${TMDB_API_KEY}`;
 
-    const respuestaCreditos = await fetch(creditosUrl);
-    const datosCreditos = await respuestaCreditos.json();
+    const creditsResponse = await fetch(creditsUrl);
+    const creditsData = await creditsResponse.json();
 
-    const director = datosCreditos.crew?.find(
-      persona => persona.job === "Director"
-    );
+    const director =
+      creditsData.crew?.find(
+        (person) => person.job === "Director"
+      )?.name || "Director desconocido";
 
     return {
-      esReal: true,
-      esAdulto: pelicula.adult === true,
-      tituloOficial: pelicula.title,
-      directorOficial: director
-        ? director.name
-        : "Director desconocido",
-      portada: pelicula.poster_path
-        ? `https://image.tmdb.org/t/p/w500${pelicula.poster_path}`
-        : null
+      titulo: movie.title,
+      director,
+      portada: movie.poster_path
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        : null,
+      adult: movie.adult
     };
   } catch (error) {
     console.error(error);
-
-    return {
-      errorRed: true
-    };
+    return null;
   }
 }
 
-let peliculas = [
-  {
-    id: 1,
-    titulo: "Matrix",
-    director: "Lana Wachowski",
-    portada: null
-  },
-  {
-    id: 2,
-    titulo: "Interstellar",
-    director: "Christopher Nolan",
-    portada: null
-  }
-];
+let peliculas = [];
 
 app.get("/api/peliculas", (req, res) => {
   res.json(peliculas);
 });
 
 app.post("/api/peliculas", async (req, res) => {
-  const { titulo, director } = req.body;
+  const { titulo } = req.body;
 
-  if (!titulo || !director) {
+  if (!titulo) {
     return res.status(400).json({
-      error: "Faltan datos obligatorios."
+      error: "Debes indicar un título."
     });
   }
 
-  if (
-    esContenidoInapropiado(titulo) ||
-    esContenidoInapropiado(director)
-  ) {
+  if (contenidoInapropiado(titulo)) {
     return res.status(400).json({
       error: "Contenido no permitido."
     });
   }
 
-  const existe = peliculas.some(
-    p =>
-      p.titulo.toLowerCase().trim() ===
-      titulo.toLowerCase().trim()
+  const duplicada = peliculas.some(
+    (p) =>
+      p.titulo.toLowerCase() ===
+      titulo.toLowerCase()
   );
 
-  if (existe) {
+  if (duplicada) {
     return res.status(400).json({
       error: "La película ya existe."
     });
   }
 
-  const infoTMDb = await buscarPeliculaRealEnTMDb(titulo);
+  const peliculaTMDb =
+    await obtenerPeliculaTMDb(titulo);
 
-  if (infoTMDb.errorConfig) {
-    return res.status(500).json({
-      error: "TMDb API Key no configurada."
-    });
-  }
-
-  if (infoTMDb.errorRed) {
-    return res.status(500).json({
-      error: "Error conectando con TMDb."
-    });
-  }
-
-  if (!infoTMDb.esReal) {
+  if (!peliculaTMDb) {
     return res.status(404).json({
       error: "La película no existe."
     });
   }
 
-  if (infoTMDb.esAdulto) {
+  if (peliculaTMDb.adult) {
     return res.status(400).json({
-      error: "Película para adultos no permitida."
-    });
-  }
-
-  if (
-    director.toLowerCase().trim() !==
-    infoTMDb.directorOficial.toLowerCase().trim()
-  ) {
-    return res.status(400).json({
-      error: `El director oficial es: ${infoTMDb.directorOficial}`
+      error:
+        "Las películas para adultos no están permitidas."
     });
   }
 
   const nuevaPelicula = {
-    id:
-      peliculas.length > 0
-        ? peliculas[peliculas.length - 1].id + 1
-        : 1,
-    titulo: infoTMDb.tituloOficial,
-    director: infoTMDb.directorOficial,
-    portada: infoTMDb.portada
+    id: Date.now(),
+    titulo: peliculaTMDb.titulo,
+    director: peliculaTMDb.director,
+    portada: peliculaTMDb.portada
   };
 
   peliculas.push(nuevaPelicula);
@@ -187,7 +138,7 @@ app.put("/api/peliculas/:id", async (req, res) => {
   const id = Number(req.params.id);
 
   const pelicula = peliculas.find(
-    p => p.id === id
+    (p) => p.id === id
   );
 
   if (!pelicula) {
@@ -196,28 +147,20 @@ app.put("/api/peliculas/:id", async (req, res) => {
     });
   }
 
-  const { titulo, director } = req.body;
+  const { titulo } = req.body;
 
-  const infoTMDb = await buscarPeliculaRealEnTMDb(titulo);
+  const peliculaTMDb =
+    await obtenerPeliculaTMDb(titulo);
 
-  if (!infoTMDb.esReal) {
+  if (!peliculaTMDb) {
     return res.status(404).json({
       error: "La película no existe."
     });
   }
 
-  if (
-    director.toLowerCase().trim() !==
-    infoTMDb.directorOficial.toLowerCase().trim()
-  ) {
-    return res.status(400).json({
-      error: `El director oficial es: ${infoTMDb.directorOficial}`
-    });
-  }
-
-  pelicula.titulo = infoTMDb.tituloOficial;
-  pelicula.director = infoTMDb.directorOficial;
-  pelicula.portada = infoTMDb.portada;
+  pelicula.titulo = peliculaTMDb.titulo;
+  pelicula.director = peliculaTMDb.director;
+  pelicula.portada = peliculaTMDb.portada;
 
   res.json(pelicula);
 });
@@ -225,41 +168,17 @@ app.put("/api/peliculas/:id", async (req, res) => {
 app.delete("/api/peliculas/:id", (req, res) => {
   const id = Number(req.params.id);
 
-  const index = peliculas.findIndex(
-    p => p.id === id
+  peliculas = peliculas.filter(
+    (p) => p.id !== id
   );
 
-  if (index === -1) {
-    return res.status(404).json({
-      error: "Película no encontrada."
-    });
-  }
-
-  peliculas.splice(index, 1);
-
   res.json({
-    mensaje: "Película eliminada correctamente."
+    mensaje: "Película eliminada."
   });
 });
 
-async function cargarPortadasIniciales() {
-  for (const pelicula of peliculas) {
-    const info = await buscarPeliculaRealEnTMDb(
-      pelicula.titulo
-    );
-
-    if (info.esReal) {
-      pelicula.portada = info.portada;
-
-      if (info.directorOficial) {
-        pelicula.director = info.directorOficial;
-      }
-    }
-  }
-}
-
-cargarPortadasIniciales().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🎬 Servidor iniciado en puerto ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(
+    `🎬 CineVentura iniciado en puerto ${PORT}`
+  );
 });

@@ -1,102 +1,168 @@
-import React, { useState, useEffect } from "react";
-import MovieList from "./components/MovieList.jsx";
-import MovieForm from "./components/MovieForm.jsx";
-import { getMovies, createMovie, updateMovie, deleteMovie } from "./services/movieService.js";
+import React, { useEffect, useState } from "react";
 
-// ==========================================================
-// App.jsx
-// Componente principal de la aplicación
-// ==========================================================
+import MovieForm from "./components/MovieForm";
+import MovieList from "./components/MovieList";
+
+import {
+  getMovies,
+  createMovie,
+  updateMovie,
+  deleteMovie
+} from "./services/movieService";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [backendStatus, setBackendStatus] = useState("checking");
   const [editingMovie, setEditingMovie] = useState(null);
 
+  const [backendStatus, setBackendStatus] =
+    useState("checking");
+
+  const [message, setMessage] =
+    useState(null);
+
   useEffect(() => {
-    cargarPeliculas();
+    loadMovies();
   }, []);
 
-  const cargarPeliculas = async () => {
+  async function loadMovies() {
     try {
       const data = await getMovies();
+
       setMovies(data);
       setBackendStatus("online");
-    } catch (error) {
+    } catch {
       setBackendStatus("offline");
     }
-  };
+  }
 
-  const handleFormSubmit = async (movieData) => {
+  function showMessage(text, type) {
+    setMessage({
+      text,
+      type
+    });
+
+    setTimeout(() => {
+      setMessage(null);
+    }, 4000);
+  }
+
+  async function handleSubmit(movieData) {
     try {
       if (editingMovie) {
-        await updateMovie(editingMovie.id, movieData);
+        await updateMovie(
+          editingMovie.id,
+          movieData
+        );
+
+        showMessage(
+          "🎬 Película actualizada correctamente",
+          "success"
+        );
+
         setEditingMovie(null);
       } else {
         await createMovie(movieData);
+
+        showMessage(
+          "🍿 Película agregada correctamente",
+          "success"
+        );
       }
-      await cargarPeliculas();
+
+      loadMovies();
     } catch (error) {
-      // Muestra la alerta con el mensaje enviado por el servidor (ej: Duplicados, XXX, etc.)
-      alert(error.message);
+      showMessage(
+        error.message,
+        "error"
+      );
     }
-  };
+  }
 
-  const handleEditClick = (movie) => {
-    setEditingMovie(movie);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingMovie(null);
-  };
-
-  const handleDeleteClick = async (id) => {
-    const confirmado = confirm("¿Seguro que quieres eliminar esta película?");
-    if (!confirmado) return;
+  async function handleDelete(id) {
+    if (
+      !window.confirm(
+        "¿Eliminar película?"
+      )
+    ) {
+      return;
+    }
 
     try {
       await deleteMovie(id);
-      await cargarPeliculas();
+
+      showMessage(
+        "🗑️ Película eliminada",
+        "success"
+      );
+
+      loadMovies();
     } catch (error) {
-      alert(error.message);
+      showMessage(
+        error.message,
+        "error"
+      );
     }
-  };
+  }
 
   return (
     <div className="app-container">
+
+      <div className="logo-container">
+
+        <h1 className="logo">
+          🎬 CineVentura
+        </h1>
+
+        <p className="logo-subtitle">
+          Descubre el cine auténtico
+        </p>
+
+      </div>
+
       <header className="app-header">
-        <h1>🎬 Catálogo de Películas</h1>
 
         {backendStatus === "online" && (
-          <span className="status status-online">🟢 Backend conectado</span>
+          <span className="status status-online">
+            🟢 Conectado
+          </span>
         )}
+
         {backendStatus === "offline" && (
-          <span className="status status-offline">🔴 Backend desconectado</span>
+          <span className="status status-offline">
+            🔴 Desconectado
+          </span>
         )}
+
         {backendStatus === "checking" && (
-          <span className="status status-checking">🟡 Comprobando conexión...</span>
+          <span className="status status-checking">
+            🟡 Comprobando...
+          </span>
         )}
+
       </header>
 
-      {backendStatus === "offline" && (
-        <div className="offline-banner">
-          No se puede conectar con <strong>http://localhost:3000</strong>.
-          <br />
-          Comprueba que tu servidor Express esté encendido (<code>node server.js</code>).
+      {message && (
+        <div
+          className={`alert alert-${message.type}`}
+        >
+          {message.text}
         </div>
       )}
 
       <MovieForm
         editingMovie={editingMovie}
-        onSubmit={handleFormSubmit}
-        onCancelEdit={handleCancelEdit}
+        onSubmit={handleSubmit}
+        onCancelEdit={() =>
+          setEditingMovie(null)
+        }
       />
 
       <MovieList
         movies={movies}
-        onEdit={handleEditClick}
-        onDelete={handleDeleteClick}
+        onEdit={setEditingMovie}
+        onDelete={handleDelete}
       />
+
     </div>
   );
 }

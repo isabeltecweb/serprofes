@@ -1,244 +1,375 @@
 /* ==========================================================
-   App.css
-   Catálogo de películas con estilo Netflix
-   ========================================================== */
+   CINEVENTURA PREMIUM 3D
+   Diseño Cinematográfico Profesional
+========================================================== */
 
-* {
-  box-sizing: border-box;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  background-color: #141414;
-  color: #ffffff;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(
+      135deg,
+      #0f0f0f,
+      #141414,
+      #1c1c1c
+    );
+
+  min-height:100vh;
+  color:white;
 }
 
-.app-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px 80px;
+.app-container{
+  max-width:1200px;
+  margin:auto;
+  padding:30px;
 }
 
-/* ================= HEADER ================= */
+/* ==========================================================
+   LOGO CINEVENTURA 3D
+========================================================== */
 
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 16px;
+.logo-container{
+  text-align:center;
+  margin-bottom:30px;
 }
 
-.app-header h1 {
-  font-size: 28px;
-  margin: 0;
-  color: #e50914;
-  letter-spacing: 0.5px;
+.logo{
+  font-size:4rem;
+  font-weight:900;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff0000,
+      #ffae00,
+      #00ff88,
+      #00c3ff,
+      #a100ff,
+      #ff0000
+    );
+
+  background-size:600% 600%;
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  animation:
+    rainbow 8s linear infinite,
+    floatLogo 3s ease-in-out infinite;
+
+  text-shadow:
+    0 0 20px rgba(255,255,255,.2);
+
+  letter-spacing:3px;
 }
 
-.status {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 20px;
-  background-color: #222;
+.logo-subtitle{
+  color:#d4d4d4;
+  margin-top:10px;
+  font-size:1rem;
+  letter-spacing:2px;
 }
 
-.status-online {
-  color: #4ade80;
+@keyframes rainbow{
+  0%{
+    background-position:0% 50%;
+  }
+  100%{
+    background-position:100% 50%;
+  }
 }
 
-.status-offline {
-  color: #f87171;
+@keyframes floatLogo{
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
 }
 
-.status-checking {
-  color: #fbbf24;
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.app-header{
+  text-align:center;
+  margin-bottom:30px;
 }
 
-.offline-banner {
-  background-color: #2a1215;
-  border: 1px solid #e50914;
-  color: #ffb3b8;
-  padding: 14px 18px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-  font-size: 14px;
-  line-height: 1.5;
+.app-header h1{
+  font-size:2rem;
+  margin-bottom:15px;
 }
 
-.offline-banner code {
-  background-color: #3a1a1d;
-  padding: 2px 6px;
-  border-radius: 4px;
+.status{
+  padding:10px 18px;
+  border-radius:30px;
+  font-weight:bold;
 }
 
-/* ================= FORMULARIO ================= */
-
-.movie-form {
-  background-color: #222222;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 32px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+.status-online{
+  background:#0f5132;
+  color:#00ff88;
 }
 
-.form-title {
-  margin-top: 0;
-  margin-bottom: 18px;
-  font-size: 18px;
+.status-offline{
+  background:#5c1111;
+  color:#ff6b6b;
 }
 
-.form-group {
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.status-checking{
+  background:#5b4b00;
+  color:#ffd93d;
 }
 
-.form-group label {
-  font-size: 13px;
-  color: #b3b3b3;
+/* ==========================================================
+   ALERTAS
+========================================================== */
+
+.alert{
+  padding:16px;
+  border-radius:12px;
+  margin-bottom:20px;
+  font-weight:bold;
+  animation:fadeIn .3s ease;
 }
 
-.form-group input {
-  background-color: #333333;
-  border: 1px solid #444444;
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: #ffffff;
-  font-size: 15px;
-  outline: none;
-  transition: all 0.3s ease;
+.alert-success{
+  background:#0f5132;
+  border:2px solid #00ff88;
 }
 
-.form-group input:focus {
-  border-color: #e50914;
-  box-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
+.alert-error{
+  background:#5c1111;
+  border:2px solid #ff4444;
 }
 
-.form-actions {
-  display: flex;
-  gap: 12px;
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(-10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
-/* ================= BOTONES ================= */
+/* ==========================================================
+   FORMULARIO
+========================================================== */
 
-.btn {
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.movie-form{
+  background:#1f1f1f;
+  padding:25px;
+  border-radius:20px;
+  margin-bottom:35px;
+
+  box-shadow:
+    0 0 20px rgba(255,0,0,.15);
 }
 
-.btn:hover {
-  transform: scale(1.08);
+.form-title{
+  margin-bottom:20px;
+  text-align:center;
 }
 
-.btn-primary {
-  background-color: #e50914;
-  color: white;
+.form-group{
+  margin-bottom:20px;
 }
 
-.btn-primary:hover {
-  background-color: #ff3040;
-  box-shadow: 0 0 20px #ff3040;
+.form-group label{
+  display:block;
+  margin-bottom:8px;
+  color:#ddd;
 }
 
-.btn-cancel {
-  background-color: #444444;
-  color: white;
+.form-group input{
+  width:100%;
+  padding:12px;
+
+  border:none;
+  border-radius:10px;
+
+  background:#2c2c2c;
+  color:white;
+
+  font-size:1rem;
 }
 
-.btn-cancel:hover {
-  background-color: #777777;
-  box-shadow: 0 0 15px #999999;
+.form-group input:focus{
+  outline:none;
+
+  box-shadow:
+    0 0 15px #ff3030;
 }
 
-.btn-edit {
-  background-color: #333333;
-  color: white;
+/* ==========================================================
+   BOTONES
+========================================================== */
+
+.btn{
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+
+  transition:.3s;
 }
 
-.btn-edit:hover {
-  background-color: #00c853;
-  color: white;
-  box-shadow: 0 0 20px #00ff66;
+.btn:hover{
+  transform:
+    translateY(-3px)
+    scale(1.05);
 }
 
-.btn-delete {
-  background-color: #e50914;
-  color: white;
+.btn-primary{
+  background:#e50914;
+  color:white;
 }
 
-.btn-delete:hover {
-  background-color: #ff1744;
-  box-shadow: 0 0 20px #ff1744;
+.btn-primary:hover{
+  background:#ff3040;
+
+  box-shadow:
+    0 0 25px #ff3040;
 }
 
-/* ================= LISTA ================= */
-
-.movie-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 18px;
+.btn-edit{
+  background:#00b050;
+  color:white;
 }
 
-.movie-card {
-  background-color: #222222;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.3s ease;
+.btn-edit:hover{
+  background:#00ff73;
+
+  box-shadow:
+    0 0 20px #00ff73;
 }
 
-.movie-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+.btn-delete{
+  background:#d90429;
+  color:white;
 }
 
-.movie-poster {
-  width: 100%;
-  height: 340px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  transition: all 0.3s ease;
+.btn-delete:hover{
+  background:#ff1744;
+
+  box-shadow:
+    0 0 20px #ff1744;
 }
 
-.movie-poster:hover {
-  transform: scale(1.03);
+.btn-cancel{
+  background:#555;
+  color:white;
 }
 
-.movie-title {
-  margin: 0 0 6px;
-  font-size: 18px;
-  color: #ffffff;
+.btn-cancel:hover{
+  background:#888;
 }
 
-.movie-director {
-  margin: 0 0 16px;
-  font-size: 14px;
-  color: #b3b3b3;
+/* ==========================================================
+   LISTA
+========================================================== */
+
+.movie-list{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(250px,1fr)
+    );
+
+  gap:25px;
 }
 
-.movie-card-actions {
-  display: flex;
-  gap: 10px;
+/* ==========================================================
+   TARJETAS
+========================================================== */
+
+.movie-card{
+  background:#1f1f1f;
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  transition:.4s;
+
+  box-shadow:
+    0 0 15px rgba(0,0,0,.4);
 }
 
-.empty-message {
-  color: #888888;
-  text-align: center;
-  padding: 40px 0;
+.movie-card:hover{
+  transform:
+    translateY(-8px)
+    scale(1.03);
+
+  box-shadow:
+    0 0 30px rgba(255,0,0,.35);
+}
+
+.movie-poster{
+  width:100%;
+  height:370px;
+
+  object-fit:cover;
+}
+
+.movie-card-info{
+  padding:15px;
+}
+
+.movie-title{
+  margin-bottom:10px;
+}
+
+.movie-director{
+  color:#ccc;
+}
+
+.movie-card-actions{
+  display:flex;
+  gap:10px;
+  padding:15px;
+}
+
+/* ==========================================================
+   VACÍO
+========================================================== */
+
+.empty-message{
+  text-align:center;
+  padding:50px;
+  color:#999;
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:768px){
+
+  .logo{
+    font-size:2.5rem;
+  }
+
+  .movie-list{
+    grid-template-columns:1fr;
+  }
+
 }
